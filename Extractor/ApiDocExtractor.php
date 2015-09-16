@@ -115,6 +115,8 @@ class ApiDocExtractor
         $array     = array();
         $resources = array();
         $excludeSections = $this->container->getParameter('nelmio_api_doc.exclude_sections');
+        $excludePaths = $this->container->getParameter('nelmio_api_doc.exclude_patterns');
+        $excludePathsPattern = empty($excludePaths) ? '/$^/' : '/(' . str_replace("/", "\\/", implode('|', $excludePaths)) . ')/i';
 
         foreach ($routes as $route) {
             if (!$route instanceof Route) {
@@ -126,6 +128,7 @@ class ApiDocExtractor
                 if (
                     $annotation && !in_array($annotation->getSection(), $excludeSections) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
+                    || preg_match($excludePathsPattern, $route->getPattern())
                 ) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {

@@ -531,12 +531,12 @@ nelmio_api_doc:
 When choosing an `http` delivery, `name` defaults to `Authorization`,
 and the header value will automatically be prefixed by the corresponding type (ie. `Basic` or `Bearer`).
 
-You can specify which sections to exclude from the documentation generation:
-
+You can specify which sections or patterns to exclude from the documentation generation:
 ```yaml
 # app/config/config.yml
 nelmio_api_doc:
     exclude_sections: ["privateapi", "testapi"]
+    exclude_patterns: ["/en", "/notused/route"]
 ```
 
 Note that `exclude_sections` will literally exclude a section from your api
@@ -601,6 +601,7 @@ Look at the built-in [Handlers](https://github.com/nelmio/NelmioApiDocBundle/tre
 nelmio_api_doc:
     name:                 'API documentation'
     exclude_sections:     []
+    exclude_patterns:     []
     default_sections_opened:  true
     motd:
         template:             'NelmioApiDocBundle::Components/motd.html.twig'
