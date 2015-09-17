@@ -126,9 +126,8 @@ class ApiDocExtractor
             if ($method = $this->getReflectionMethod($route->getDefault('_controller'))) {
                 $annotation = $this->reader->getMethodAnnotation($method, self::ANNOTATION_CLASS);
                 if (
-                    $annotation && !in_array($annotation->getSection(), $excludeSections) &&
+                    $annotation && !(in_array($annotation->getSection(), $excludeSections) || preg_match($excludePathsPattern, $route->getPath())) &&
                     (in_array($view, $annotation->getViews()) || (0 === count($annotation->getViews()) && $view === ApiDoc::DEFAULT_VIEW))
-                    || preg_match($excludePathsPattern, $route->getPattern())
                 ) {
                     if ($annotation->isResource()) {
                         if ($resource = $annotation->getResource()) {
